@@ -1,14 +1,89 @@
-{% extends 'portfolio_app/base.html' %}
-{% load static %}
-
-{% block title %}Welcome to My Portfolio{% endblock %}
-
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahul Ranjan - Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1F2937',
+                        light: '#F9FAFB',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            },
+            plugins: [],
+        }
+    </script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Fix horizontal scrolling */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+        
+        /* Enhanced Navigation Styles */
+        .nav-item {
+            position: relative;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link {
+            position: relative;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center justify-center gradient-bg text-white overflow-hidden">
         <div class="absolute inset-0 bg-black opacity-30"></div>
         <div class="container mx-auto px-4 z-10 text-center" data-aos="fade-up">
-            <img src="{{ profile_image }}" alt="Profile Picture" class="w-40 h-40 rounded-full mx-auto mb-8 border-4 border-white shadow-lg">
+            <img src="https://github.com/rranjanr.png" alt="Profile Picture" class="w-40 h-40 rounded-full mx-auto mb-8 border-4 border-white shadow-lg">
             <h1 class="text-5xl md:text-6xl font-bold mb-4 text-shadow">Hi, I'm <span class="text-primary">Rahul Ranjan</span></h1>
             <p class="text-xl md:text-2xl mb-8">Full Stack Developer | Python Expert | AI Enthusiast</p>
             <div class="flex justify-center space-x-4">
@@ -130,7 +205,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project Card 1 -->
                 <div class="glass-effect rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="100">
-                    <img src="{% static 'images/project1.jpg' %}" alt="Inventory Management System" class="w-full h-48 object-cover">
+                    <img src="https://via.placeholder.com/800x600/3B82F6/FFFFFF?text=Inventory+System" alt="Inventory Management System" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Inventory Management System</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">A comprehensive inventory management system built with Python to track products, manage stock levels, and generate reports.</p>
@@ -152,7 +227,7 @@
 
                 <!-- Project Card 2 -->
                 <div class="glass-effect rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="200">
-                    <img src="{% static 'images/project2.jpg' %}" alt="ShopOnline" class="w-full h-48 object-cover">
+                    <img src="https://via.placeholder.com/800x600/10B981/FFFFFF?text=ShopOnline" alt="ShopOnline" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">ShopOnline</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">A web-based e-commerce platform with product management, shopping cart functionality, and user authentication.</p>
@@ -174,7 +249,7 @@
 
                 <!-- Project Card 3 -->
                 <div class="glass-effect rounded-lg overflow-hidden" data-aos="fade-up" data-aos-delay="300">
-                    <img src="{% static 'images/project3.jpg' %}" alt="SIMS" class="w-full h-48 object-cover">
+                    <img src="https://via.placeholder.com/800x600/6366F1/FFFFFF?text=Student+System" alt="SIMS" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">Student Management System</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">A student information management system with CRUD operations using PHP, HTML, CSS, and MySQL database.</p>
@@ -198,81 +273,103 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-gray-100 dark:bg-gray-800">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center mb-4" data-aos="fade-up">Get In Touch</h2>
-            <p class="text-center text-gray-600 dark:text-gray-400 mb-16 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                Have a question or want to work together? Feel free to reach out to me directly at 
-                <a href="mailto:rahul.edu.ranjan98153@gmail.com" class="text-primary hover:underline">rahul.edu.ranjan98153@gmail.com</a> 
-                or use the form below.
-            </p>
-            <div class="max-w-3xl mx-auto glass-effect p-8 rounded-2xl shadow-xl" data-aos="fade-up" data-aos-delay="200">
-                <form id="contact-form" class="space-y-6">
-                    {% csrf_token %}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium mb-2">Your Name</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-user text-gray-400"></i>
-                                </div>
-                                <input type="text" id="name" name="name" required 
-                                    class="w-full pl-10 px-4 py-3 rounded-lg bg-white/50 dark:bg-gray-700/50 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary">
-                            </div>
+    <section id="contact" class="py-20 gradient-bg text-white relative overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10">
+            <h2 class="text-4xl font-bold text-center mb-16" data-aos="fade-up">Get In Touch</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8" data-aos="fade-right">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-white/10 p-3 rounded-lg">
+                            <i class="fas fa-map-marker-alt text-2xl"></i>
                         </div>
                         <div>
-                            <label for="email" class="block text-sm font-medium mb-2">Your Email</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-envelope text-gray-400"></i>
-                                </div>
-                                <input type="email" id="email" name="email" required 
-                                    class="w-full pl-10 px-4 py-3 rounded-lg bg-white/50 dark:bg-gray-700/50 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary">
-                            </div>
+                            <h3 class="text-xl font-bold mb-2">Location</h3>
+                            <p>Biratnagar, Nepal</p>
                         </div>
                     </div>
-                    <div>
-                        <label for="subject" class="block text-sm font-medium mb-2">Subject</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-tag text-gray-400"></i>
-                            </div>
-                            <input type="text" id="subject" name="subject" required 
-                                class="w-full pl-10 px-4 py-3 rounded-lg bg-white/50 dark:bg-gray-700/50 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-white/10 p-3 rounded-lg">
+                            <i class="fas fa-envelope text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Email</h3>
+                            <p>rahul.edu.ranjan98153@gmail.com</p>
                         </div>
                     </div>
-                    <div>
-                        <label for="message" class="block text-sm font-medium mb-2">Message</label>
-                        <div class="relative">
-                            <div class="absolute top-3 left-0 pl-3 flex items-start pointer-events-none">
-                                <i class="fas fa-comment text-gray-400"></i>
-                            </div>
-                            <textarea id="message" name="message" rows="6" required 
-                                class="w-full pl-10 px-4 py-3 rounded-lg bg-white/50 dark:bg-gray-700/50 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-white/10 p-3 rounded-lg">
+                            <i class="fas fa-phone text-2xl"></i>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" 
-                            class="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-8 py-3 rounded-full transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1">
-                            <i class="fas fa-paper-plane mr-2"></i>Send Message
-                        </button>
-                    </div>
-                </form>
-                <div id="contact-success" class="hidden mt-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-check-circle text-green-500"></i>
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm font-medium">Thank you for your message! I'll get back to you soon.</p>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Phone</h3>
+                            <p>+977 9811066455</p>
                         </div>
                     </div>
                 </div>
+                <form id="contact-form" class="glass-effect p-8 rounded-lg" data-aos="fade-left">
+                    <div class="mb-6">
+                        <label for="name" class="block mb-2 font-medium">Your Name</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="email" class="block mb-2 font-medium">Your Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="subject" class="block mb-2 font-medium">Subject</label>
+                        <input type="text" id="subject" name="subject" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block mb-2 font-medium">Message</label>
+                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50" required></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-white text-primary font-bold rounded-lg hover:bg-gray-100 transition-colors">Send Message</button>
+                </form>
             </div>
         </div>
     </section>
-{% endblock %}
 
-{% block extra_js %}
-    <script src="{% static 'js/contact.js' %}"></script>
-{% endblock %} 
+    <!-- Footer -->
+    <footer class="py-8 bg-gray-900 text-white text-center">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="https://github.com/rranjanr" target="_blank" class="text-white hover:text-primary transition-colors">
+                    <i class="fab fa-github text-2xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/r-ranzan-781898279/" target="_blank" class="text-white hover:text-primary transition-colors">
+                    <i class="fab fa-linkedin text-2xl"></i>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100028254210950" target="_blank" class="text-white hover:text-primary transition-colors">
+                    <i class="fab fa-facebook text-2xl"></i>
+                </a>
+                <a href="https://www.instagram.com/r_ranzan19/" target="_blank" class="text-white hover:text-primary transition-colors">
+                    <i class="fab fa-instagram text-2xl"></i>
+                </a>
+            </div>
+            <p>&copy; 2025 Rahul Ranjan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- AOS Animation Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Contact form submission
+            const form = document.getElementById('contact-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thank you for your message! I will get back to you soon.');
+                    form.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
