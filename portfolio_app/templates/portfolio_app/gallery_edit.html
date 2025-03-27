@@ -1,0 +1,77 @@
+{% extends 'portfolio_app/base.html' %}
+{% load static %}
+
+{% block title %}Add Gallery Item - Rahul Ranjan{% endblock %}
+
+{% block content %}
+    <!-- Gallery Form Section -->
+    <section class="py-20 bg-gray-100 dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-6">
+                    <a href="{% url 'stories' %}" class="text-primary hover:text-blue-600 transition-colors flex items-center">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Stories
+                    </a>
+                </div>
+                
+                <h1 class="text-4xl font-bold mb-12" data-aos="fade-up">Add Gallery Item</h1>
+                
+                <div class="glass-effect p-8 rounded-xl shadow-lg" data-aos="fade-up" data-aos-delay="100">
+                    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                        {% csrf_token %}
+                        
+                        <div>
+                            <label for="title" class="block text-sm font-medium mb-2">Title</label>
+                            <input type="text" id="title" name="title" required 
+                                class="w-full px-4 py-3 rounded-lg bg-white/50 dark:bg-gray-700/50 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div>
+                            <label for="image" class="block text-sm font-medium mb-2">Image</label>
+                            <input type="file" id="image" name="image" accept="image/*" required
+                                class="w-full px-4 py-3 rounded-lg bg-white/50 dark:bg-gray-700/50 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        
+                        <div id="image-preview" class="hidden">
+                            <p class="text-sm font-medium mb-2">Preview:</p>
+                            <img src="" alt="Preview" class="h-64 object-cover rounded-lg">
+                        </div>
+                        
+                        <div class="flex justify-end space-x-4">
+                            <a href="{% url 'stories' %}" 
+                                class="px-6 py-3 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition-colors">
+                                Cancel
+                            </a>
+                            <button type="submit" class="px-6 py-3 bg-secondary hover:bg-green-600 text-white rounded-lg transition-colors">
+                                Add to Gallery
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageInput = document.getElementById('image');
+        const imagePreview = document.getElementById('image-preview');
+        const previewImage = imagePreview.querySelector('img');
+        
+        imageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                }
+                
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>
+{% endblock %} 

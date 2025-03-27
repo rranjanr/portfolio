@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Portfolio{% endblock %}</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1F2937',
+                        light: '#F9FAFB',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            },
+            plugins: [],
+        }
+    </script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            
+            .gradient-bg {
+                background: linear-gradient(135deg, #3B82F6 0%, #10B981 100%);
+            }
+            
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .snow {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 100;
+                overflow: hidden;
+            }
+            
+            .snowflake {
+                filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+                animation: snowflake-float 3s ease-in-out infinite alternate;
+            }
+            
+            @keyframes snowflake-float {
+                0% {
+                    transform: translateY(0) rotate(0deg) scale(1);
+                }
+                100% {
+                    transform: translateY(10px) rotate(5deg) scale(1.05);
+                }
+            }
+            
+            /* Enhanced Navigation Styles */
+            .nav-item {
+                position: relative;
+                margin: 0 0.25rem;
+                transition: all 0.3s ease;
+            }
+            
+            .nav-link {
+                position: relative;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+                z-index: 1;
+            }
+            
+            .nav-link::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: theme('colors.primary');
+                opacity: 0;
+                transform: translateY(100%);
+                transition: all 0.3s ease;
+                z-index: -1;
+                border-radius: 0.5rem;
+            }
+            
+            .nav-link:hover::before {
+                transform: translateY(0);
+                opacity: 0.1;
+            }
+            
+            .nav-link:hover {
+                transform: translateY(-3px);
+                color: theme('colors.primary');
+            }
+            
+            .nav-link.active {
+                color: theme('colors.primary');
+                font-weight: 600;
+                background-color: rgba(59, 130, 246, 0.1);
+            }
+            
+            .nav-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 2rem;
+                height: 2rem;
+                margin-right: 0.5rem;
+                border-radius: 0.375rem;
+                background: rgba(59, 130, 246, 0.1);
+                color: theme('colors.primary');
+                transition: all 0.3s ease;
+            }
+            
+            .nav-link:hover .nav-icon {
+                transform: rotate(10deg) scale(1.1);
+                background: theme('colors.primary');
+                color: white;
+            }
+            
+            /* Fix horizontal scrolling */
+            html, body {
+                overflow-x: hidden;
+                max-width: 100%;
+            }
+            
+            /* Custom cursor styles */
+            .cursor-dot,
+            .cursor-dot-outline {
+                pointer-events: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                transform: translate(-50%, -50%);
+                border-radius: 50%;
+                opacity: 1;
+                transition: opacity 0.3s ease-in-out;
+                z-index: 9999;
+            }
+            
+            .cursor-dot {
+                width: 8px;
+                height: 8px;
+                background-color: theme('colors.primary');
+                box-shadow: 0 0 10px theme('colors.primary'), 0 0 20px theme('colors.primary');
+            }
+            
+            .cursor-dot-outline {
+                width: 40px;
+                height: 40px;
+                background-color: rgba(59, 130, 246, 0.1);
+                border: 2px solid rgba(59, 130, 246, 0.5);
+                transition: transform 0.2s ease-out;
+            }
+            
+            /* Hide default cursor when custom cursor is active */
+            .cursor-hidden {
+                cursor: none;
+            }
+            
+            /* Cursor hover effect */
+            .cursor-hover .cursor-dot {
+                transform: translate(-50%, -50%) scale(2);
+                background-color: theme('colors.secondary');
+            }
+            
+            .cursor-hover .cursor-dot-outline {
+                transform: translate(-50%, -50%) scale(1.5);
+                border-color: theme('colors.secondary');
+                background-color: rgba(16, 185, 129, 0.1);
+            }
+            
+            /* Cursor click effect */
+            .cursor-click .cursor-dot {
+                transform: translate(-50%, -50%) scale(0.5);
+                background-color: white;
+            }
+            
+            .cursor-click .cursor-dot-outline {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            
+            /* Cursor trail effect */
+            .cursor-trail {
+                position: fixed;
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, theme('colors.primary'), theme('colors.secondary'));
+                pointer-events: none;
+                opacity: 0.5;
+                z-index: 9998;
+            }
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-light dark:bg-dark text-dark dark:text-light min-h-screen flex flex-col cursor-hidden">
+    <!-- Snow effect container -->
+    <div id="snow-container" class="snow"></div>
+    
+    <!-- Custom cursor elements -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-dot-outline" id="cursor-dot-outline"></div>
+    
+    <!-- Navigation -->
+    <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 shadow-lg backdrop-blur-sm">
+        <div class="container mx-auto px-4">
+            <nav class="py-3 flex justify-between items-center">
+                <a href="{% url 'home' %}" class="text-2xl font-bold flex items-center">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white mr-3">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Rahul Ranjan</span>
+                </a>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none bg-gray-100 dark:bg-gray-800 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Desktop menu -->
+                <div class="hidden md:flex items-center">
+                    <ul class="flex items-center">
+                        <li class="nav-item">
+                            <a href="{% url 'home' %}" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-home"></i></span>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#about" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-user"></i></span>
+                                <span>About</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#skills" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-cogs"></i></span>
+                                <span>Skills</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#projects" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-project-diagram"></i></span>
+                                <span>Projects</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="flex items-center">
+                        <a href="#contact" class="ml-4 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-5 py-2 rounded-full transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1">
+                            <i class="fas fa-envelope mr-2"></i>Contact
+                        </a>
+                        {% if user.is_authenticated %}
+                        <div class="ml-4 relative group">
+                            <button class="flex items-center text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                                <i class="fas fa-user-circle text-xl"></i>
+                                <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50 hidden group-hover:block">
+                                <div class="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                                    <p class="text-sm font-medium">Logged in as</p>
+                                    <p class="text-primary font-bold">{{ user.username }}</p>
+                                </div>
+                                <a href="{% url 'admin:index' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <i class="fas fa-cog mr-2"></i>Admin Panel
+                                </a>
+                                <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-900 shadow-md">
+            <div class="container mx-auto px-4 py-3">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'home' %}" class="block nav-link">
+                            <span class="nav-icon"><i class="fas fa-home"></i></span>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#about" class="block nav-link">
+                            <span class="nav-icon"><i class="fas fa-user"></i></span>
+                            <span>About</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#skills" class="block nav-link">
+                            <span class="nav-icon"><i class="fas fa-cogs"></i></span>
+                            <span>Skills</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#projects" class="block nav-link">
+                            <span class="nav-icon"><i class="fas fa-project-diagram"></i></span>
+                            <span>Projects</span>
+                        </a>
+                    </li>
+                    <li class="mt-4">
+                        <a href="#contact" class="block w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-4 py-2 rounded-lg transition-all text-center">
+                            <i class="fas fa-envelope mr-2"></i>Contact
+                        </a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                        <div class="px-2 py-1">
+                            <p class="text-sm font-medium">Logged in as</p>
+                            <p class="text-primary font-bold">{{ user.username }}</p>
+                        </div>
+                        <a href="{% url 'admin:index' %}" class="block nav-link mt-2">
+                            <span class="nav-icon"><i class="fas fa-cog"></i></span>
+                            <span>Admin Panel</span>
+                        </a>
+                        <a href="{% url 'logout' %}" class="block nav-link mt-2">
+                            <span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">My Portfolio</h3>
+                    <p class="mb-4">A showcase of my skills, projects, and experiences.</p>
+                    <div class="flex space-x-4">
+                        <a href="https://github.com/rranjanr" target="_blank" class="text-white hover:text-primary transition-colors"><i class="fab fa-github text-xl"></i></a>
+                        <a href="https://www.linkedin.com/in/r-ranzan-781898279/" target="_blank" class="text-white hover:text-primary transition-colors"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100028254210950" target="_blank" class="text-white hover:text-primary transition-colors"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="https://www.instagram.com/r_ranzan19/" target="_blank" class="text-white hover:text-primary transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-primary transition-colors">About</a></li>
+                        <li><a href="#skills" class="hover:text-primary transition-colors">Skills</a></li>
+                        <li><a href="#projects" class="hover:text-primary transition-colors">Projects</a></li>
+                        <li><a href="#contact" class="hover:text-primary transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li><i class="fas fa-envelope mr-2"></i> rahul.edu.ranjan98153@gmail.com</li>
+                        <li><i class="fas fa-phone mr-2"></i> +977 9805360131</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> Biratnagar 13, Nepal</li>
+                        <li><i class="fas fa-birthday-cake mr-2"></i> June 16, 2002</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center">
+                <p>&copy; {% now "Y" %} My Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Snow effect script -->
+    <script>
+        // Initialize AOS
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Enhanced Snow effect
+            const snowContainer = document.getElementById('snow-container');
+            const isMobile = window.innerWidth < 768;
+            const snowflakeCount = isMobile ? 20 : 50; // Fewer snowflakes on mobile
+            const snowflakes = [];
+            let animationPaused = false;
+            
+            // Performance optimization - pause animations when tab is not visible
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    animationPaused = true;
+                    snowContainer.style.display = 'none';
+                } else {
+                    animationPaused = false;
+                    snowContainer.style.display = 'block';
+                    
+                    // Restart animations
+                    while (snowContainer.firstChild) {
+                        snowContainer.removeChild(snowContainer.firstChild);
+                    }
+                    
+                    for (let i = 0; i < snowflakeCount; i++) {
+                        createSnowflake(true);
+                    }
+                }
+            });
+            
+            // Create snowflake pool
+            for (let i = 0; i < snowflakeCount; i++) {
+                createSnowflake(true);
+            }
+            
+            function createSnowflake(isInitial = false) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.style.position = 'absolute';
+                snowflake.style.color = 'white';
+                snowflake.style.userSelect = 'none';
+                snowflake.style.willChange = 'transform'; // Performance optimization
+                
+                // Randomize snowflake properties
+                const size = Math.random() * 10 + 5;
+                const opacity = Math.random() * 0.6 + 0.2;
+                const initialX = Math.random() * window.innerWidth;
+                const initialY = isInitial ? Math.random() * window.innerHeight * -1 : -20;
+                const duration = Math.random() * 8 + 7; // Longer duration for smoother fall
+                const horizontalSwing = Math.random() * 150 - 75;
+                
+                // Variety of snowflake characters
+                const snowflakeChars = ['❄', '❅', '❆', '✻', '✼', '❉', '❊', '❋'];
+                const randomChar = snowflakeChars[Math.floor(Math.random() * snowflakeChars.length)];
+                
+                // Apply styles
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.opacity = opacity;
+                snowflake.style.left = `${initialX}px`;
+                snowflake.style.top = `${initialY}px`;
+                snowflake.innerHTML = randomChar;
+                
+                // Use CSS animations for smoother performance
+                snowflake.style.transition = `transform ${duration}s linear, top ${duration}s linear`;
+                
+                // Add to DOM
+                snowContainer.appendChild(snowflake);
+                
+                // Start animation with a small delay for staggered effect
+                setTimeout(() => {
+                    snowflake.style.transform = `translateY(${window.innerHeight + 50}px) translateX(${horizontalSwing}px) rotate(${Math.random() * 360}deg)`;
+                    snowflake.style.top = `${window.innerHeight + 50}px`;
+                }, Math.random() * 500);
+                
+                // Remove and recreate snowflake after animation completes
+                setTimeout(() => {
+                    snowflake.remove();
+                    createSnowflake();
+                }, duration * 1000);
+                
+                return snowflake;
+            }
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                // Clear all snowflakes
+                while (snowContainer.firstChild) {
+                    snowContainer.removeChild(snowContainer.firstChild);
+                }
+                
+                // Create new snowflakes based on new window size
+                const newSnowflakeCount = window.innerWidth < 768 ? 30 : 50;
+                for (let i = 0; i < newSnowflakeCount; i++) {
+                    createSnowflake(true);
+                }
+            });
+        });
+    </script>
+    
+    <!-- Custom cursor animation script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Custom cursor elements
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorOutline = document.getElementById('cursor-dot-outline');
+            
+            // Check if we should enable the custom cursor (disable on touch devices)
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            if (isTouchDevice) {
+                document.body.classList.remove('cursor-hidden');
+                cursorDot.style.display = 'none';
+                cursorOutline.style.display = 'none';
+                return;
+            }
+            
+            // Variables for cursor position
+            let mouseX = 0;
+            let mouseY = 0;
+            let outlineX = 0;
+            let outlineY = 0;
+            let dotX = 0;
+            let dotY = 0;
+            
+            // Trail elements array
+            const trailElements = [];
+            const maxTrailElements = 15;
+            
+            // Create trail elements
+            for (let i = 0; i < maxTrailElements; i++) {
+                const trail = document.createElement('div');
+                trail.classList.add('cursor-trail');
+                trail.style.opacity = (1 - i / maxTrailElements) * 0.5;
+                trail.style.width = trail.style.height = `${Math.max(3, 8 - i * 0.5)}px`;
+                document.body.appendChild(trail);
+                trailElements.push({
+                    element: trail,
+                    x: 0,
+                    y: 0
+                });
+            }
+            
+            // Update cursor position on mouse move
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+            
+            // Add hover effect to interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, input, textarea, select, [role="button"]');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    document.body.classList.add('cursor-hover');
+                });
+                el.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('cursor-hover');
+                });
+            });
+            
+            // Add click effect
+            document.addEventListener('mousedown', () => {
+                document.body.classList.add('cursor-click');
+            });
+            
+            document.addEventListener('mouseup', () => {
+                document.body.classList.remove('cursor-click');
+            });
+            
+            // Animation loop for smooth cursor movement
+            function animateCursor() {
+                // Calculate smooth movement for outline
+                const outlineSpeed = 0.15;
+                outlineX += (mouseX - outlineX) * outlineSpeed;
+                outlineY += (mouseY - outlineY) * outlineSpeed;
+                
+                // Calculate smooth movement for dot (faster than outline)
+                const dotSpeed = 0.35;
+                dotX += (mouseX - dotX) * dotSpeed;
+                dotY += (mouseY - dotY) * dotSpeed;
+                
+                // Update cursor positions
+                cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+                cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px)`;
+                
+                // Update trail positions with delay
+                for (let i = trailElements.length - 1; i > 0; i--) {
+                    trailElements[i].x = trailElements[i-1].x;
+                    trailElements[i].y = trailElements[i-1].y;
+                }
+                
+                // First trail element follows the cursor
+                if (trailElements.length > 0) {
+                    trailElements[0].x = mouseX;
+                    trailElements[0].y = mouseY;
+                }
+                
+                // Update trail element positions
+                trailElements.forEach((trail, index) => {
+                    trail.element.style.transform = `translate(${trail.x}px, ${trail.y}px)`;
+                });
+                
+                requestAnimationFrame(animateCursor);
+            }
+            
+            // Start animation
+            animateCursor();
+            
+            // Hide cursor when leaving window
+            document.addEventListener('mouseleave', () => {
+                cursorDot.style.opacity = '0';
+                cursorOutline.style.opacity = '0';
+                trailElements.forEach(trail => {
+                    trail.element.style.opacity = '0';
+                });
+            });
+            
+            // Show cursor when entering window
+            document.addEventListener('mouseenter', () => {
+                cursorDot.style.opacity = '1';
+                cursorOutline.style.opacity = '1';
+                trailElements.forEach((trail, index) => {
+                    trail.element.style.opacity = (1 - index / maxTrailElements) * 0.5;
+                });
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 
